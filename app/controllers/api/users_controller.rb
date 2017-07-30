@@ -15,6 +15,11 @@ class Api::UsersController < ApplicationController
     end
   end
 
+  def show
+    user = User.find(item_params[:id])
+    render json: user, status: 200
+  end
+
   def destroy
     begin
       user = User.find(params[:id])

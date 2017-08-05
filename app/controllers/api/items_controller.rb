@@ -1,21 +1,20 @@
 class Api::ItemsController < ApplicationController
   before_action :authenticated?
 
-  def create
-    item = @list.items.new(item_params)
-    item.user = @list.user
+  def index
+    @item = @list.items.all
+    render json: @item, each_serializer: ItemsSerializer
+  end
 
-    if item.valid?
-      item.save!
-      render json: item, status: 200
+  def create
+    @list - List.find(params[:list_id])
+    @item = Item.new(item_params)
+
+    if @item.save
+      render json: @item.to_json
     else
       render json: { error: item.errors.full_messages }, status: :unprocessable_entity
     end
-  end
-
-  def index
-    items = @list.items.all
-    render json: items, each_serializer: ItemSerializer, status: 200
   end
 
   def show
@@ -24,16 +23,20 @@ class Api::ItemsController < ApplicationController
   end
 
   def update
-    item = Item.find(item_params[:id])
-    if item.update(item_params)
-      render json: item
-    else
-      render json: { errors: item.errors.full_messages }, status: :unprocessable_entity
+    begin
+      @item = Item.find(item_params[:id])
+      if @item.update(item_params)
+        render json: @item.to_json
+      else
+        render json: { errors: item.errors.full_messages }, status: :unprocessable_entity
+      end
+    rescue ActiveRecord::RecordNotFound
+      render :json => { errors: "Item not found. Command failed."}
     end
   end
 
   private
   def item_params
-    params.require(:item).permit(:name, :body, :completed, :list_id)
+    params.require(:item).permit(:name, :description, :completed, :list_id)
   end
 end

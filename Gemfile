@@ -20,7 +20,10 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'bootstrap'
 gem 'figaro'
+gem 'devise'
 gem 'active_model_serializers', '~> 0.10.0'
+gem 'devise-token_authenticatable'
+
 
 group :development, :test do
   gem 'byebug'

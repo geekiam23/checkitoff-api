@@ -20,9 +20,10 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'bootstrap'
 gem 'figaro'
-gem 'devise'
-gem 'active_model_serializers', '~> 0.10.0'
-gem 'devise-token_authenticatable'
+gem 'active_model_serializers', '~> 0.10.0.rc4'
+gem 'devise_token_auth', '~> 0.1.37'
+gem 'devise', '~> 4.1.1'
+gem 'rack-cors', :require => 'rack/cors'
 
 
 group :development, :test do
